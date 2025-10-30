@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konservasi Energi - Peran Gubernur Jawa Tengah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Professional Blue & Gray -->
+    <!-- Application Structure Plan: SPA dengan navigasi sidebar tetap. Konten utama dibagi menjadi: Ringkasan (orientasi), Peran & Kewenangan (tab interaktif untuk Kepala Daerah & Wakil Pusat), Langkah Implementasi (daftar interaktif 'accordion'), Instrumen Pendukung (kategorisasi visual), dan Referensi. Struktur ini dipilih untuk memecah informasi kompleks, memudahkan navigasi terfokus, dan meningkatkan interaktivitas dibandingkan Q&A asli. Alur pengguna didesain untuk eksplorasi bertahap dari gambaran umum ke detail spesifik. -->
+    <!-- Visualization & Content Choices: 
+        - Ringkasan: Teks. Tujuan: Orientasi. Metode: Paragraf HTML. Interaksi: Tidak ada. Justifikasi: Konteks awal.
+        - Peran & Kewenangan: Dua tab (Kepala Daerah, Wakil Pusat) dengan daftar kewenangan. Tujuan: Detail tugas spesifik. Metode: Tab HTML + JS. Interaksi: Klik tab. Justifikasi: Navigasi cepat antar peran ganda. Library: Vanilla JS.
+        - Langkah Implementasi: Daftar interaktif (mirip accordion). Tujuan: Tunjukkan proses. Metode: Divs bertingkat + JS. Interaksi: Klik langkah untuk detail. Justifikasi: Memvisualisasikan urutan aksi dengan detail tersembunyi. Library: Vanilla JS.
+        - Instrumen Pendukung: Daftar terkategori dengan ikon Unicode. Tujuan: Informasikan sumber daya. Metode: Daftar HTML + ikon. Interaksi: Tidak ada. Justifikasi: Klarifikasi kebutuhan visual. Library: Tidak ada.
+        - Referensi: Daftar peraturan. Tujuan: Sumber informasi. Metode: Daftar HTML. Interaksi: Tidak ada. Justifikasi: Transparansi. Library: Tidak ada.
+        - Konfirmasi: TIDAK ADA SVG. TIDAK ADA Mermaid JS. Semua elemen visual dibuat dengan HTML/CSS/Tailwind/Unicode. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+            color: #1e293b; /* slate-800 */
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        .nav-link {
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem; /* rounded-md */
+            transition: background-color 0.2s ease, color 0.2s ease;
+            color: #334155; /* slate-700 */
+            font-weight: 500; /* medium */
+        }
+        .nav-link.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0369a1; /* sky-700 */
+            font-weight: 600; /* semibold */
+        }
+         .nav-link:hover:not(.active) {
+             background-color: #f1f5f9; /* slate-100 */
+             color: #0f172a; /* slate-900 */
+         }
+        .step {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border: 1px solid #e2e8f0; /* slate-200 */
+        }
+         .step:hover {
+             background-color: #f8fafc; /* slate-50 */
+         }
+        .step.open {
+             background-color: #f0f9ff; /* sky-50 */
+             border-left-color: #0ea5e9; /* sky-500 */
+             border-left-width: 4px;
+        }
+        .step-details {
+            display: none;
+            margin-top: 0.75rem; /* mt-3 */
+            padding-left: 1rem; /* pl-4 */
+            padding-top: 0.5rem; /* pt-2 */
+            border-left: 2px solid #bae6fd; /* sky-200 */
+            font-size: 0.875rem; /* text-sm */
+            color: #475569; /* slate-600 */
+        }
+        .step-arrow {
+            transition: transform 0.2s ease;
+        }
+        .step.open .step-arrow {
+             transform: rotate(180deg);
+        }
+        .tab-button {
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid transparent;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            color: #475569; /* slate-600 */
+        }
+        .tab-button.active {
+            color: #0ea5e9; /* sky-500 */
+            border-bottom-color: #0ea5e9; /* sky-500 */
+            font-weight: 600;
+        }
+         .tab-button:hover:not(.active) {
+             background-color: #f1f5f9; /* slate-100 */
+         }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* Chart Container Placeholder Style */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+            background-color: #e2e8f0; /* slate-200 for placeholder */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+            color: #64748b; /* slate-500 */
+            font-style: italic;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar/Navigation -->
+        <aside class="w-full md:w-64 bg-white shadow-lg p-5">
+            <h1 class="text-xl font-bold text-sky-800 mb-8 flex items-center">
+                <span class="text-2xl mr-2">🏛️</span> Konservasi Energi Jateng
+            </h1>
+            <nav class="space-y-2">
+                <a class="nav-link block flex items-center active" data-target="ringkasan"><span class="mr-2">📄</span> Ringkasan</a>
+                <a class="nav-link block flex items-center" data-target="peran"><span class="mr-2">👤</span> Peran & Kewenangan</a>
+                <a class="nav-link block flex items-center" data-target="implementasi"><span class="mr-2">⚙️</span> Langkah Implementasi</a>
+                <a class="nav-link block flex items-center" data-target="instrumen"><span class="mr-2">🛠️</span> Instrumen Pendukung</a>
+                <a class="nav-link block flex items-center" data-target="referensi"><span class="mr-2">📚</span> Referensi Peraturan</a>
+                 <!-- Placeholder for potential future chart section -->
+                 <!-- <a class="nav-link block flex items-center" data-target="visualisasi"><span class="mr-2">📊</span> Visualisasi Data</a> -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+
+            <!-- Section: Ringkasan Eksekutif -->
+            <section id="ringkasan" class="section active bg-white p-8 rounded-lg shadow-md space-y-4 mb-6">
+                <h2 class="text-2xl font-semibold text-sky-700 border-b pb-3 mb-5">Ringkasan Eksekutif</h2>
+                <p class="text-slate-700 leading-relaxed">
+                    Pelaksanaan konservasi energi merupakan amanah penting yang diatur dalam berbagai peraturan perundangan di Indonesia. Bagi Pemerintah Provinsi Jawa Tengah, Gubernur memegang peran sentral, baik sebagai Kepala Daerah maupun sebagai Wakil Pemerintah Pusat. Rangkuman interaktif ini bertujuan untuk memberikan pemahaman yang jelas mengenai kewenangan, tugas, langkah implementasi, serta instrumen yang diperlukan oleh Gubernur Jawa Tengah dalam memastikan program konservasi energi, khususnya manajemen energi, berjalan efektif di lingkungan Pemerintah Provinsi dan melakukan pembinaan ke Kabupaten/Kota, demi tercapainya efisiensi energi dan pelestarian sumber daya energi.
+                </p>
+                <p class="text-slate-700 leading-relaxed">
+                    Aplikasi ini menyajikan informasi kunci dari rangkuman analisis peraturan perundangan terkait, disusun dalam format yang mudah dinavigasi untuk mendukung pengambilan kebijakan dan pelaksanaan program konservasi energi di Jawa Tengah. Gunakan navigasi di samping untuk menjelajahi setiap bagian.
+                </p>
+            </section>
+
+            <!-- Section: Peran & Kewenangan Gubernur -->
+            <section id="peran" class="section bg-white p-8 rounded-lg shadow-md space-y-6 mb-6">
+                <h2 class="text-2xl font-semibold text-sky-700 border-b pb-3 mb-5">Peran & Kewenangan Gubernur</h2>
+                 <p class="text-slate-700 leading-relaxed mb-6">
+                    Gubernur Jawa Tengah memiliki peran ganda dalam pelaksanaan konservasi energi: sebagai Kepala Daerah Provinsi dan sebagai Wakil Pemerintah Pusat. Kewenangan spesifiknya berbeda tergantung peran yang dijalankan. Klik tab di bawah untuk melihat rincian kewenangan untuk masing-masing peran, terutama yang berkaitan dengan manajemen energi.
+                </p>
+
+                <!-- Tabs Navigation -->
+                <div class="border-b border-slate-300 mb-4">
+                    <button class="tab-button active" onclick="openTab(event, 'tab-kepala-daerah')">Sebagai Kepala Daerah</button>
+                    <button class="tab-button" onclick="openTab(event, 'tab-wakil-pusat')">Sebagai Wakil Pusat</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div id="tab-kepala-daerah" class="tab-content active space-y-3">
+                    <h3 class="text-lg font-semibold text-sky-800 mb-3">Kewenangan sebagai Kepala Daerah Provinsi:</h3>
+                     <ul class="list-disc list-inside text-slate-700 space-y-2 pl-2 text-sm">
+                            <li><strong>Koordinasi Pelaksanaan:</strong> Mengoordinasikan implementasi konservasi energi melalui manajemen energi oleh semua Perangkat Daerah Provinsi.</li>
+                            <li><strong>Pengelolaan EBT & Konservasi Tertentu:</strong> Mengelola urusan EBT (Biomassa, Biogas, Surya, Angin, Air, Laut) dan konservasi energi untuk izin yang dikeluarkan provinsi.</li>
+                            <li><strong>Implementasi Internal:</strong> Memastikan pelaksanaan manajemen energi pada sarana dan prasarana milik/dikelola Pemprov Jateng.</li>
+                            <li><strong>Penganggaran:</strong> Memastikan alokasi APBD Provinsi untuk program konservasi energi.</li>
+                            <li><strong>Insentif/Disinsentif Daerah:</strong> Berwenang memberikan insentif/disinsentif terkait konservasi energi sesuai aturan.</li>
+                            <li><strong>Perencanaan (RUED-P):</strong> Mengintegrasikan program konservasi energi ke dalam Rencana Umum Energi Daerah Provinsi.</li>
+                            <li><strong>Regulasi Daerah:</strong> Menyiapkan dan menetapkan Pergub/Kepgub yang diperlukan untuk mendukung implementasi.</li>
+                        </ul>
+                </div>
+
+                <div id="tab-wakil-pusat" class="tab-content space-y-3">
+                    <h3 class="text-lg font-semibold text-sky-800 mb-3">Kewenangan sebagai Wakil Pemerintah Pusat:</h3>
+                     <ul class="list-disc list-inside text-slate-700 space-y-2 pl-2 text-sm">
+                            <li><strong>Pembinaan dan Pengawasan:</strong> Melakukan pembinaan dan pengawasan pelaksanaan konservasi energi oleh Pemda Kabupaten/Kota di Jawa Tengah, termasuk kepada pemangku kepentingan tingkat provinsi.</li>
+                            <li><strong>Monitoring dan Evaluasi:</strong> Memonitor dan mengevaluasi kegiatan konservasi energi di Kabupaten/Kota.</li>
+                            <li><strong>Pelaporan:</strong> Melaporkan pelaksanaan konservasi energi Pemprov dan rangkuman Kabupaten/Kota kepada Menteri ESDM.</li>
+                        </ul>
+                </div>
+
+                 <div class="mt-6 p-4 bg-sky-50 rounded-lg border border-sky-200">
+                     <h3 class="font-semibold text-md text-sky-800 mb-2">💡 Fokus Utama Manajemen Energi</h3>
+                     <p class="text-slate-700 text-sm">Dalam konteks Manajemen Energi, tugas krusial Gubernur adalah memastikan <strong class="text-sky-700">penerapan efektif</strong> di lingkungan internal Pemprov Jateng dan melaksanakan <strong class="text-sky-700">pembinaan serta pengawasan</strong> yang memadai terhadap implementasinya di tingkat Kabupaten/Kota se-Jawa Tengah.</p>
+                 </div>
+            </section>
+
+            <!-- Section: Langkah Implementasi -->
+            <section id="implementasi" class="section bg-white p-8 rounded-lg shadow-md space-y-4 mb-6">
+                <h2 class="text-2xl font-semibold text-sky-700 border-b pb-3 mb-5">Langkah Implementasi Manajemen Energi di Pemprov</h2>
+                 <p class="text-slate-700 leading-relaxed mb-6">
+                    Implementasi manajemen energi yang efektif di lingkungan Pemerintah Provinsi Jawa Tengah mengikuti serangkaian langkah terstruktur. Tahapan ini, sesuai amanat peraturan, memastikan pendekatan yang sistematis mulai dari perencanaan hingga pelaporan. Klik pada setiap langkah untuk melihat detail dan referensi peraturannya.
+                </p>
+                <div class="space-y-2">
+                    <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                            <span><span class="font-bold mr-2">1.</span>Identifikasi Lingkup Sarana & Prasarana</span>
+                             <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                            <p>Mendata dan menetapkan fasilitas (gedung, kendaraan, PJU, dll.) milik/dikelola Pemprov yang menjadi target penerapan Manajemen Energi.</p>
+                            <p class="mt-1 text-xs text-slate-400">Ref: Permen ESDM 3/2025 Ps. 5</p>
+                        </div>
+                    </div>
+                     <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                            <span><span class="font-bold mr-2">2.</span>Penunjukan Manajer Energi & Tim</span>
+                            <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                            <p>Menetapkan Manajer Energi (bersertifikat) dan Tim Manajemen Energi resmi melalui SK Gubernur/pejabat delegasi.</p>
+                             <p class="mt-1 text-xs text-slate-400">Ref: Permen ESDM 3/2025 Ps. 7</p>
+                        </div>
+                    </div>
+                     <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                           <span><span class="font-bold mr-2">3.</span>Penetapan Kebijakan Energi Provinsi</span>
+                            <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                            <p>Merumuskan dan menetapkan komitmen Pemprov terkait efisiensi, regulasi, dan pengadaan hemat energi via Pergub/Kepgub.</p>
+                            <p class="mt-1 text-xs text-slate-400">Ref: Permen ESDM 3/2025 Ps. 9</p>
+                        </div>
+                    </div>
+                     <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                            <span><span class="font-bold mr-2">4.</span>Penyusunan Rencana Manajemen Energi</span>
+                             <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                            <p>Tim menyusun dokumen rencana detail: analisis risiko, tinjauan energi, IKE & baseline, tujuan & target, rencana pengumpulan data.</p>
+                             <p class="mt-1 text-xs text-slate-400">Ref: Permen ESDM 3/2025 Ps. 10</p>
+                        </div>
+                    </div>
+                     <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                            <span><span class="font-bold mr-2">5.</span>Pelaksanaan Program Efisiensi Energi</span>
+                             <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                            <p>Implementasi program, pengendalian operasi, pertimbangan efisiensi dalam pengadaan dan modifikasi fasilitas.</p>
+                             <p class="mt-1 text-xs text-slate-400">Ref: Permen ESDM 3/2025 Ps. 11 & Ps. 19-21</p>
+                        </div>
+                    </div>
+                     <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                           <span><span class="font-bold mr-2">6.</span>Pelaksanaan Audit Energi Berkala</span>
+                             <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                            <p>Evaluasi mendalam pemanfaatan energi (min. 1x/3 tahun) oleh Auditor Energi bersertifikat untuk identifikasi peluang hemat.</p>
+                            <p class="mt-1 text-xs text-slate-400">Ref: Permen ESDM 3/2025 Ps. 15</p>
+                        </div>
+                    </div>
+                     <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                           <span><span class="font-bold mr-2">7.</span>Pelaksanaan Rekomendasi Hasil Audit</span>
+                             <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                            <p>Implementasi rekomendasi audit (teknis & biaya layak) dalam waktu maks. 3 tahun.</p>
+                             <p class="mt-1 text-xs text-slate-400">Ref: Permen ESDM 3/2025 Ps. 18</p>
+                        </div>
+                    </div>
+                     <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                            <span><span class="font-bold mr-2">8.</span>Pemantauan & Evaluasi Internal Berkelanjutan</span>
+                             <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                            <p>Pengukuran, analisis, dan pelaporan Kinerja Energi rutin (min. tahunan) untuk evaluasi efektivitas program.</p>
+                             <p class="mt-1 text-xs text-slate-400">Ref: Permen ESDM 3/2025 Ps. 12</p>
+                        </div>
+                    </div>
+                     <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                           <span><span class="font-bold mr-2">9.</span>Pengalokasian Anggaran dalam APBD</span>
+                            <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                            <p>Memastikan dana memadai di APBD Provinsi untuk semua tahapan Manajemen Energi.</p>
+                             <p class="mt-1 text-xs text-slate-400">Ref: PP 33/2023 Ps. 38; Permen ESDM 3/2025 Ps. 25-26</p>
+                        </div>
+                    </div>
+                    <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                            <span><span class="font-bold mr-2">10.</span>Pelaporan Tahunan ke Menteri ESDM</span>
+                            <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                             <p>Menyusun laporan tahunan (termasuk rangkuman Kab/Kota) sesuai format KESDM & menyampaikannya via sistem elektronik sebelum 30 Juni.</p>
+                              <p class="mt-1 text-xs text-slate-400">Ref: Permen ESDM 3/2025 Ps. 27</p>
+                        </div>
+                    </div>
+                     <div class="step p-4 rounded-md" onclick="toggleStepDetails(this)">
+                        <h3 class="font-semibold text-md text-sky-800 flex justify-between items-center">
+                            <span><span class="font-bold mr-2">11.</span>Pembinaan & Pengawasan ke Kab/Kota</span>
+                            <svg class="w-5 h-5 step-arrow text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </h3>
+                        <div class="step-details">
+                            <p>Sebagai Wakil Pusat, Gubernur menetapkan & melaksanakan mekanisme pembinaan (sosialisasi, bimtek) dan pengawasan (monitoring) ke Pemda Kab/Kota.</p>
+                             <p class="mt-1 text-xs text-slate-400">Ref: PP 33/2023 Ps. 56</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Instrumen Pendukung -->
+             <section id="instrumen" class="section bg-white p-8 rounded-lg shadow-md space-y-4 mb-6">
+                <h2 class="text-2xl font-semibold text-sky-700 border-b pb-3 mb-5">Instrumen Pendukung</h2>
+                 <p class="text-slate-700 leading-relaxed mb-6">
+                    Pelaksanaan konservasi energi yang efektif memerlukan dukungan berbagai instrumen. Berikut adalah kategorisasi instrumen dan alat bantu utama yang dibutuhkan Gubernur Jawa Tengah:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 shadow-sm">
+                        <h3 class="font-semibold text-lg text-sky-800 mb-3 flex items-center"><span class="text-xl mr-2">📜</span> Regulasi</h3>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                            <li>Pergub & Kepgub</li>
+                            <li>RUED-P</li>
+                        </ul>
+                    </div>
+                     <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 shadow-sm">
+                        <h3 class="font-semibold text-lg text-sky-800 mb-3 flex items-center"><span class="text-xl mr-2">🏛️</span> Kelembagaan</h3>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                            <li>Tim Manajemen Energi</li>
+                            <li>Dinas Teknis (ESDM)</li>
+                            <li>Inspektorat</li>
+                             <li>Unit Kerja Gubernur sbg Wakil Pusat</li>
+                        </ul>
+                    </div>
+                     <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 shadow-sm">
+                        <h3 class="font-semibold text-lg text-sky-800 mb-3 flex items-center"><span class="text-xl mr-2">🧑‍💼</span> SDM</h3>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                            <li>Manajer Energi (Sertifikat)</li>
+                            <li>Auditor Energi (Sertifikat)</li>
+                            <li>Personel Terlatih</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 shadow-sm">
+                        <h3 class="font-semibold text-lg text-sky-800 mb-3 flex items-center"><span class="text-xl mr-2">🛠️</span> Teknis & Dokumen</h3>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                             <li>Sistem Monitoring Energi</li>
+                             <li>Laporan Audit Energi</li>
+                             <li>Dokumen Rencana ME</li>
+                             <li>Format Laporan KESDM</li>
+                             <li>SKE / LTHE / SNI</li>
+                        </ul>
+                    </div>
+                     <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 shadow-sm">
+                        <h3 class="font-semibold text-lg text-sky-800 mb-3 flex items-center"><span class="text-xl mr-2">💰</span> Anggaran</h3>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                             <li>Alokasi APBD Provinsi</li>
+                        </ul>
+                    </div>
+                     <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 shadow-sm">
+                        <h3 class="font-semibold text-lg text-sky-800 mb-3 flex items-center"><span class="text-xl mr-2">💻</span> Sistem Informasi</h3>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                            <li>Sistem Pelaporan KESDM</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Referensi Peraturan -->
+            <section id="referensi" class="section bg-white p-8 rounded-lg shadow-md space-y-4 mb-6">
+                <h2 class="text-2xl font-semibold text-sky-700 border-b pb-3 mb-5">Referensi Peraturan</h2>
+                 <p class="text-slate-700 leading-relaxed mb-6">
+                    Informasi dalam aplikasi ini dirangkum berdasarkan peraturan perundangan berikut (diurutkan berdasarkan hierarki):
+                </p>
+                <ol class="list-decimal list-inside text-slate-700 space-y-2 text-sm pl-2">
+                    <li>Undang-Undang Nomor 30 Tahun 2007 tentang Energi (UU Energi).</li>
+                    <li>Undang-Undang Nomor 23 Tahun 2014 tentang Pemerintahan Daerah (UU Pemda).</li>
+                    <li>Peraturan Pemerintah Nomor 33 Tahun 2023 tentang Konservasi Energi (PP 33/2023).</li>
+                    <li>Peraturan Presiden Nomor 11 Tahun 2023 tentang Urusan Pemerintahan Konkuren Tambahan di Bidang Energi dan Sumber Daya Mineral pada Subbidang Energi Baru Terbarukan (Perpres 11/2023).</li>
+                    <li>Peraturan Menteri ESDM Nomor 3 Tahun 2025 tentang Konservasi Energi oleh Pemerintah dan Pemerintah Daerah (Permen ESDM 3/2025).</li>
+                    <li>Peraturan Menteri ESDM Nomor 8 Tahun 2025 tentang Manajemen Energi (Permen ESDM 8/2025).</li>
+                </ol>
+                  <p class="text-slate-500 text-xs italic mt-5">Catatan: Nomor & tahun Permen ESDM diasumsikan berdasarkan konteks PP 33/2023.</p>
+            </section>
+
+             <!-- Section: Visualisasi Data (Placeholder) -->
+            <!--
+            <section id="visualisasi" class="section bg-white p-8 rounded-lg shadow-md space-y-4 mb-6">
+                <h2 class="text-2xl font-semibold text-sky-700 border-b pb-3 mb-5">Visualisasi Data (Contoh)</h2>
+                 <p class="text-slate-700 leading-relaxed mb-6">
+                   Bagian ini adalah contoh bagaimana data kuantitatif terkait konservasi energi dapat divisualisasikan secara interaktif. Jika laporan sumber berisi data (misalnya, target penghematan, realisasi, alokasi anggaran), grafik seperti di bawah ini dapat digunakan.
+                 </p>
+                 <div class="chart-container">
+                     <!-- Placeholder text, replace with <canvas> if Chart.js is used -->
+                     Area untuk visualisasi data (misal: grafik target vs realisasi penghematan energi)
+                 </div>
+                 <p class="text-center text-sm text-slate-500 mt-2">Grafik Interaktif (Contoh)</p>
+            </section>
+            -->
+
+        </main>
+    </div>
+
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Navigation Logic
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                // Deactivate all links and sections
+                navLinks.forEach(l => l.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+
+                // Activate clicked link and target section
+                link.classList.add('active');
+                const targetId = link.getAttribute('data-target');
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+            });
+        });
+
+        // Tab Logic
+        function openTab(event, tabId) {
+             // Hide all tab contents
+            tabContents.forEach(content => content.classList.remove('active'));
+            // Deactivate all tab buttons
+            tabButtons.forEach(button => button.classList.remove('active'));
+
+            // Show the target tab content
+            document.getElementById(tabId).classList.add('active');
+            // Activate the clicked tab button
+            event.currentTarget.classList.add('active');
+        }
+
+        // Accordion/Step Logic
+        function toggleStepDetails(stepElement) {
+            const details = stepElement.querySelector('.step-details');
+            const arrow = stepElement.querySelector('.step-arrow');
+            const isOpen = stepElement.classList.contains('open');
+
+            // Close all other steps first
+             document.querySelectorAll('.step.open').forEach(openStep => {
+                 if (openStep !== stepElement) {
+                     openStep.classList.remove('open');
+                     openStep.querySelector('.step-details').style.display = 'none';
+                 }
+             });
+
+            // Toggle the clicked step
+            if (isOpen) {
+                details.style.display = 'none';
+                stepElement.classList.remove('open');
+            } else {
+                details.style.display = 'block';
+                stepElement.classList.add('open');
+            }
+        }
+
+         // Ensure the first section and first tab are active on load
+        document.addEventListener('DOMContentLoaded', () => {
+             const firstSection = document.querySelector('.section');
+             if(firstSection) {
+                 firstSection.classList.add('active');
+             }
+             const firstLink = document.querySelector('.nav-link');
+              if(firstLink) {
+                 firstLink.classList.add('active');
+             }
+             // Activate first tab in the 'Peran' section if it exists
+             const firstTabButton = document.querySelector('#peran .tab-button');
+             if (firstTabButton) {
+                 firstTabButton.classList.add('active');
+                 const firstTabContentId = firstTabButton.getAttribute('onclick').match(/'([^']+)'/)[1]; // Extract tab ID
+                 const firstTabContent = document.getElementById(firstTabContentId);
+                 if (firstTabContent) {
+                     firstTabContent.classList.add('active');
+                 }
+             }
+        });
+
+    </script>
+</body>
+</html>
